@@ -89,5 +89,5 @@ pokemonNames.forEach(name => {
       console.log(data);
       const sprite = data.sprites.front_shiny;
       new Pokemon(name, sprite);
-    }).catch(error => console.error(error));
+    });
 });
