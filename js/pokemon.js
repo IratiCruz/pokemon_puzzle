@@ -25,6 +25,7 @@ class Pokemon {
       img.style.top = Math.ceil(Math.random()*100)+'px';
       img.style.left = Math.ceil(Math.random()*100)+'px';
       document.body.appendChild(img);
+      return img;
     }
     
     addEventListeners() {   
@@ -40,13 +41,13 @@ class Pokemon {
       let left = parseInt(this.element.style.left);
 
       if(Pokemon.keys.ArrowUp)
-        this.element.style.top = (top+step)+'px';
-      if(Pokemon.keys.ArrowDown)
         this.element.style.top = (top-step)+'px';
+      if(Pokemon.keys.ArrowDown)
+        this.element.style.top = (top+step)+'px';
       if(Pokemon.keys.ArrowLeft)
-        this.element.style.top = (left+step)+'px';
+        this.element.style.left = (left-step)+'px';
       if(Pokemon.keys.ArrowRight)
-        this.element.style.top = (left-step)+'px';
+        this.element.style.left = (left+step)+'px';
     }
 } // end of Pokemon class
 
@@ -75,17 +76,18 @@ setInterval(moveActivePokemon, 10);
 // Instantiate Pokémon
 const pokemonNames = ['pikachu', 'bulbasaur', 'charmander', 'squirtle', 'jigglypuff'];
 
-const apiUrl = 'https://pokeapi.co/api/v2/pokemon';
+const apiUrl = 'https://pokeapi.co/api/v2/pokemon/';
 
 pokemonNames.forEach(name => {
     //Solicita al servidor externo la imagen del pokemon correspondiente y genera el pokemon
     fetch(apiUrl+name).then(response =>{
       if(!response.ok){
-        throw new Error(`Error fetching Pokemon ${id}: ${response.status}`);
+        throw new Error(`Error fetching Pokemon ${name}: ${response.status}`);
       }
       return response.json();
     }).then(data => {
+      console.log(data);
       const sprite = data.sprites.front_shiny;
-      new Pokemon(name,sprite);
-    });
+      new Pokemon(name, sprite);
+    }).catch(error => console.error(error));
 });
