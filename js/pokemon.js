@@ -75,6 +75,17 @@ setInterval(moveActivePokemon, 10);
 // Instantiate Pokémon
 const pokemonNames = ['pikachu', 'bulbasaur', 'charmander', 'squirtle', 'jigglypuff'];
 
+const apiUrl = 'https://pokeapi.co/api/v2/pokemon';
+
 pokemonNames.forEach(name => {
     //Solicita al servidor externo la imagen del pokemon correspondiente y genera el pokemon
+    fetch(apiUrl+name).then(response =>{
+      if(!response.ok){
+        throw new Error(`Error fetching Pokemon ${id}: ${response.status}`);
+      }
+      return response.json();
+    }).then(data => {
+      const sprite = data.sprites.front_shiny;
+      new Pokemon(name,sprite);
+    });
 });
